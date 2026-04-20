@@ -1,0 +1,126 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Music Player</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+    <link rel="stylesheet" href="styles.css"/>
+</head>
+<body>
+
+<div class="app">
+
+  <!--SIDEBAR-->
+  <aside class="sidebar">
+    <div class="logo">M<span>Player</span></div>
+
+    <nav class="nav-section">
+      <div class="nav-label">Menu</div>
+      <div class="nav-item active" data-view="home" onclick="switchView('home', this)">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
+        Home
+      </div>
+      <div class="nav-item" data-view="search" onclick="switchView('search', this)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+        Search
+      </div>
+      <div class="nav-item" data-view="library" onclick="switchView('library', this)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17"/><circle cx="9" cy="19" r="1"/><circle cx="20" cy="19" r="1"/></svg>
+        Library
+      </div>
+    </nav>
+
+    <div class="nav-section" style="flex:1;">
+      <div class="nav-label">Albums</div>
+      <div class="sidebar-albums" id="sidebarAlbums"></div>
+    </div>
+  </aside>
+
+  <!--MAIN CONTENT-->
+  <main class="main" id="main">
+
+    <!-- HOME VIEW -->
+    <div class="view active" id="view-home">
+      <div class="section-title">Albums</div>
+      <div class="albums-grid" id="albumsGrid"></div>
+
+      <!-- Track list panel (shown when an album is clicked) -->
+      <div id="tracklistSection" class="tracklist-section hidden">
+        <div class="tracklist-header">
+          <img id="tlCover" src="" alt=""/>
+          <div class="tracklist-meta">
+            <h2 id="tlTitle"></h2>
+            <p id="tlArtist"></p>
+          </div>
+        </div>
+        <ul class="track-list" id="trackList"></ul>
+      </div>
+    </div>
+
+    <!-- SEARCH VIEW -->
+    <div class="view" id="view-search">
+      <div class="section-title">Search</div>
+      <div class="search-input-wrap">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+        <input class="search-input" type="text" placeholder="Search songs, albums, artists…" id="searchInput" oninput="handleSearch(this.value)"/>
+      </div>
+      <ul class="track-list" id="searchResults"></ul>
+    </div>
+
+    <!-- LIBRARY VIEW -->
+    <div class="view" id="view-library">
+      <div class="section-title">Library</div>
+      <div class="albums-grid" id="libraryGrid"></div>
+    </div>
+
+  </main>
+
+  <!--BOTTOM PLAYER-->
+  <footer class="player">
+    <!-- Now playing -->
+    <div class="now-playing">
+      <img id="playerCover" src="track.jpg" alt="track cover"/>
+      <div class="now-playing-text">
+        <div class="now-playing-artist" id="playerArtist">—</div>
+      </div>
+    </div>
+
+    <!-- Controls -->
+    <div class="controls">
+      <div class="control-btns">
+        <button class="ctrl-btn" onclick="prevSong()" title="Previous">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M6 6h2v12H6zm3.5 6 8.5 6V6z"/></svg>
+        </button>
+        <button class="ctrl-btn play-pause" id="playPauseBtn" onclick="togglePlay()" title="Play/Pause">
+          
+          <svg id="iconPlay" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+          <svg id="iconPause" class="hidden" viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
+        </button>
+        <button class="ctrl-btn" onclick="nextSong()" title="Next">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M6 18l8.5-6L6 6v12zm2-6 5.5 3.5L8 9v6zm8-6h2v12h-2z"/></svg>
+        </button>
+      </div>
+      <div class="progress-wrap">
+        <span class="time-label" id="currentTime">0:00</span>
+        <div class="progress-bar-track" id="progressTrack" onclick="seekTo(event)">
+          <div class="progress-bar-fill" id="progressFill"></div>
+        </div>
+        <span class="time-label" id="totalTime">0:00</span>
+      </div>
+    </div>
+
+
+    <div class="volume-wrap">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>
+      <input type="range" class="volume-slider" id="volumeSlider" min="0" max="1" step="0.01" value="0.8" oninput="setVolume(this.value)"/>
+    </div>
+  </footer>
+
+</div>
+
+<audio id="audioPlayer"></audio>
+<script src="java.js"></script>
+</body>
+</html>
